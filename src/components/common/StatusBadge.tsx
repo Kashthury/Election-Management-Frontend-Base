@@ -6,6 +6,13 @@ interface StatusBadgeProps {
 }
 
 export default function StatusBadge({ status, children }: StatusBadgeProps) {
-  const cls = status === "success" ? "success" : status === "danger" ? "danger" : status === "warning" ? "warning" : "neutral";
+  const cls =
+    status === "success"
+      ? "success"
+      : status === "danger"
+        ? "danger"
+        : status === "warning"
+          ? "warning"
+          : "neutral";
   return <span className={`status-badge ${cls}`}>{children}</span>;
 }

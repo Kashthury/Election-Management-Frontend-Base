@@ -11,10 +11,7 @@ import {
   Check,
   SquarePen,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import { electionService } from "../../api/management/election";
-import { ROUTES } from "../../constants/routes";
 import PageHeader from "../../components/common/PageHeader";
 import Button from "../../components/common/Button";
 import Pagination from "../../components/common/Pagination";
@@ -23,8 +20,7 @@ import { usePagination } from "../../hooks/usePagination";
 import type { Party } from "../../types";
 
 export default function ElectionPage() {
-  const { provinces, districts, parties, settings, appendResult } =
-    useAppContext();
+  const { provinces, districts, parties } = useAppContext();
   const [provinceId, setProvinceId] = useState("");
   const [districtId, setDistrictId] = useState("");
   const district = useMemo(
@@ -42,7 +38,6 @@ export default function ElectionPage() {
   const [partyVoteModalOpen, setPartyVoteModalOpen] = useState(false);
   const [draftPartyId, setDraftPartyId] = useState("");
   const [draftPartyVotes, setDraftPartyVotes] = useState("");
-  const navigate = useNavigate();
   const provinceDistricts = useMemo(
     () =>
       provinceId
@@ -182,30 +177,8 @@ export default function ElectionPage() {
   };
   const total = votes.reduce((s, v) => s + Number(v || 0), 0);
 
-  const calculate = async () => {
-    try {
-      if (!district || district.seats <= 1)
-        throw new Error("The selected district must have more than 1 seat.");
-      if (total !== Number(validVotes))
-        throw new Error(
-          `Vote mismatch: party vote total is ${total.toLocaleString()}, valid votes are ${Number(validVotes).toLocaleString()}.`,
-        );
-      const result = await electionService.calculate({
-        district: district.name,
-        seats: district.seats,
-        validVotes: Number(validVotes),
-        disqualifiedPercentage: settings.disqualifiedPercentage,
-        parties: list.map((c, i) => ({
-          ...c,
-          votes: Number(votes[i] || 0),
-        })),
-      });
-      appendResult(result);
-      setError("");
-      navigate(ROUTES.RESULTS);
-    } catch (e) {
-      setError(e.message);
-    }
+  const calculate = () => {
+    // TODO: Validate the vote entry, call the backend calculation API, then show its result response.
   };
 
   return (
@@ -261,11 +234,6 @@ export default function ElectionPage() {
                 aria-label="Filter by province"
               >
                 <option value="">Select province</option>
-                {provinces.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
               </select>
             </label>
             <label className="election-district-filter">
@@ -280,11 +248,6 @@ export default function ElectionPage() {
                 <option value="">
                   {provinceId ? "Select district" : "Select province first"}
                 </option>
-                {provinceDistricts.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
               </select>
             </label>
             <ClearFiltersButton onClick={() => { setProvinceId(""); setDistrictId(""); setVotes([]); setValidVotes(0); setError(""); }} />
@@ -308,45 +271,11 @@ export default function ElectionPage() {
               </tr>
             </thead>
             <tbody>
-              {visibleVoteParties.map((party, index) => {
-                const rowIndex = votePageStart + index;
-                return (
-                  <tr key={`${party.districtId || "selected"}-${party.id}`}>
-                    <td>{rowIndex + 1}</td>
-                    {!districtId && <td>{party.districtName}</td>}
-                    <td>
-                      <strong>{party.name}</strong>
-                    </td>
-                    <td>
-                      <span className="vote-count-readonly">
-                        {Number(
-                          visiblePartyVotes[rowIndex] ?? 0,
-                        ).toLocaleString()}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="row-actions">
-                        <button
-                          type="button"
-                          className="row-action"
-                          aria-label={`Edit votes for ${party.name}`}
-                          title="Edit votes"
-                          onClick={() => openPartyVoteModal(party as Party)}
-                        >
-                          <SquarePen size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-              {!visibleParties.length && (
-                <tr>
-                  <td colSpan={!districtId ? 5 : 4} className="module-empty">
-                    No parties are registered in the selected area.
-                  </td>
-                </tr>
-              )}
+              <tr>
+                <td colSpan={!districtId ? 5 : 4} className="module-empty">
+                  Connect the party API to render vote entry rows here.
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -427,11 +356,6 @@ export default function ElectionPage() {
                   required
                 >
                   <option value="">Select a province</option>
-                  {provinces.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
                 </select>
               </label>
               <label className="modal-field">
@@ -450,11 +374,6 @@ export default function ElectionPage() {
                         : "No districts in this province"
                       : "Select a province first"}
                   </option>
-                  {draftProvinceDistricts.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.name}
-                    </option>
-                  ))}
                 </select>
               </label>
               <label className="modal-field">
@@ -533,11 +452,6 @@ export default function ElectionPage() {
                   required
                 >
                   <option value="">Select a province</option>
-                  {provinces.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
                 </select>
               </label>
               <label className="modal-field">
@@ -561,11 +475,6 @@ export default function ElectionPage() {
                         : "No districts in this province"
                       : "Select a province first"}
                   </option>
-                  {draftProvinceDistricts.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.name}
-                    </option>
-                  ))}
                 </select>
               </label>
               <label className="modal-field">
@@ -598,11 +507,6 @@ export default function ElectionPage() {
                         ? "Select a party"
                         : "No parties registered in this district"}
                   </option>
-                  {(parties[draftDistrictId] || []).map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                    </option>
-                  ))}
                 </select>
               </label>
               <label className="modal-field">

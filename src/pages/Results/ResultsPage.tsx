@@ -4,7 +4,6 @@ import { formatNumber } from "../../utils/formatters";
 import PageHeader from "../../components/common/PageHeader";
 import Card from "../../components/common/Card";
 import StatCard from "../../components/common/StatCard";
-import StatusBadge from "../../components/common/StatusBadge";
 import DataTable from "../../components/common/DataTable";
 import { Vote, Calculator, Users, Award } from "lucide-react";
 import Pagination from "../../components/common/Pagination";
@@ -28,7 +27,7 @@ function ResultsContent({lastResult}: { lastResult: ResultLogEntry }) {
     </div>
     <Card><div className="card-title"><h3>Seat Allocation</h3><p>Final seats are the sum of Round 1, Round 2 and the bonus seat.</p></div>
       <DataTable columns={["#","Party","Votes","Qualification","Round 1","Round 2","Bonus","Total Seats"]}>
-        {pageItems.map((c,index)=>{const i=(pagination?.page-1||0)*(pagination?.pageSize||10)+index;return <tr key={c.id}><td>{i+1}</td><td><strong>{c.name}</strong></td><td>{formatNumber(c.votes)}</td><td>{c.qualified?<StatusBadge status="success">Qualified</StatusBadge>:<StatusBadge status="danger">Disqualified</StatusBadge>}</td><td>{c.round1}</td><td>{c.round2}</td><td>{c.bonus?<StatusBadge status="warning">YES</StatusBadge>:"—"}</td><td><strong className="seat-result">{c.totalSeats}</strong></td></tr>;})}
+        <tr><td colSpan={8} className="module-empty">Connect the election calculation API to render result rows here.</td></tr>
       </DataTable>
       <Pagination {...(pagination || {page:1,pageCount:1,total:lastResult.parties.length,pageSize:10,setPage:()=>{}})} />
     </Card>

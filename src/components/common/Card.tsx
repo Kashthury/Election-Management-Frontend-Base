@@ -5,6 +5,14 @@ interface CardProps extends HTMLAttributes<HTMLElement> {
   className?: string;
 }
 
-export default function Card({ children, className = "", ...props }: CardProps) {
-  return <section className={`card ${className}`} {...props}>{children}</section>;
+export default function Card({
+  children,
+  className = "",
+  ...props
+}: CardProps) {
+  return (
+    <section className={`card ${className}`} {...props}>
+      {children}
+    </section>
+  );
 }

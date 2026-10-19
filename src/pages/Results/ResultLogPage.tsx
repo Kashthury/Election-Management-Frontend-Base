@@ -16,8 +16,7 @@ export default function ResultLogPage() {
   const { pageItems, pagination } = usePagination(resultsLog);
 
   const openResult = result => {
-    setLastResult(result);
-    navigate(ROUTES.RESULTS);
+    // TODO: Load the selected result from the backend and navigate to its result view.
   };
 
   return <div>
@@ -33,14 +32,7 @@ export default function ResultLogPage() {
       <div className="card-title"><h3>Calculation history</h3><p>Each successful calculation is saved in this browser for later review.</p></div>
       {resultsLog.length ? <>
         <DataTable columns={["Calculated","District","Valid votes","Parties","Seats","Action"]}>
-          {pageItems.map(result=><tr key={result.logId || `${result.district}-${result.calculatedAt}`}>
-            <td><span className="result-log-time">{new Date(result.calculatedAt).toLocaleString()}</span></td>
-            <td><strong>{result.district}</strong></td>
-            <td>{formatNumber(result.validVotes)}</td>
-            <td>{result.parties.length}</td>
-            <td>{result.seats}</td>
-            <td><Button variant="secondary result-log-open" icon={ArrowUpRight} onClick={()=>openResult(result)}>View result</Button></td>
-          </tr>)}
+          <tr><td colSpan={6} className="module-empty">Connect the result history API to render history rows here.</td></tr>
         </DataTable>
         <Pagination {...(pagination || {page:1,pageCount:1,total:resultsLog.length,pageSize:10,setPage:()=>{}})} />
       </> : <div className="empty result-log-empty"><Vote size={38}/><h3>No calculations logged</h3><p>Run an election calculation to create the first result log entry.</p><Button onClick={()=>navigate(ROUTES.ELECTION)}>Go to Vote Entry</Button></div>}

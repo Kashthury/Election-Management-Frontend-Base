@@ -25,7 +25,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           </NavLink>)}
         </section>)}
       </nav>
-      <div className="sidebar-footer"><span className="online-dot"/> Mock data mode</div>
+      <div className="sidebar-footer"><span className="online-dot"/> Assessment mode</div>
     </aside>
   );
 }
