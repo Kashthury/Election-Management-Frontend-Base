@@ -87,7 +87,7 @@ export default function DistrictsPage() {
             >
               <ArrowLeft size={16} /> Back to Configuration
             </button>
-            <Button onClick={openCreate} disabled={!provinces.length}>
+            <Button onClick={openCreate}>
               Add District
             </Button>
           </div>
