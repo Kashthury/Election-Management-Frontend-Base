@@ -17,7 +17,6 @@ import Button from "../../components/common/Button";
 import Pagination from "../../components/common/Pagination";
 import ClearFiltersButton from "../../components/common/ClearFiltersButton";
 import { usePagination } from "../../hooks/usePagination";
-import type { Party } from "../../types";
 
 export default function ElectionPage() {
   const { provinces, districts, parties } = useAppContext();
@@ -29,7 +28,7 @@ export default function ElectionPage() {
   );
   const list = parties[districtId] || [];
   const [validVotes, setValidVotes] = useState(0);
-  const [votes, setVotes] = useState([]);
+  const [votes, setVotes] = useState<number[]>([]);
   const [error, setError] = useState("");
   const [voteModalOpen, setVoteModalOpen] = useState(false);
   const [draftProvinceId, setDraftProvinceId] = useState("");
@@ -73,17 +72,7 @@ export default function ElectionPage() {
       ),
     [visibleVoteDistricts, parties],
   );
-  const visiblePartyVotes = visibleParties.map((party) => {
-    const partyIndex = (parties[party.districtId] || []).findIndex(
-      (item) => item.id === party.id,
-    );
-    return party.districtId === districtId ? Number(votes[partyIndex] ?? 0) : 0;
-  });
-  const { pageItems: visibleVoteParties, pagination: votePagination } =
-    usePagination(visibleParties);
-  const votePageStart = votePagination
-    ? (votePagination.page - 1) * votePagination.pageSize
-    : 0;
+  const { pagination: votePagination } = usePagination(visibleParties);
 
   const openVoteModal = () => {
     setDraftProvinceId(provinceId);
@@ -273,7 +262,7 @@ export default function ElectionPage() {
             <tbody>
               <tr>
                 <td colSpan={!districtId ? 5 : 4} className="module-empty">
-                  Connect the party API to render vote entry rows here.
+                  Connect the election vote API to load party rows and recorded vote totals for the selected district.
                 </td>
               </tr>
             </tbody>

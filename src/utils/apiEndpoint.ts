@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
   districtSeats: "Call your backend API to update seat allocation for a district",
   partiesByDistrict: "Call your backend API to get and create parties for a district",
   partyById: "Call your backend API to update or delete a party in a district",
+  electionVotes: "Call your backend API to get and save vote entries for a district",
   electionSettings: "Call your backend API to get and update election settings",
   electionResults: "Call your backend API to get election result history",
   calculateElection: "Call your backend API to calculate election results",

@@ -38,6 +38,7 @@ Configure the backend base URL to match your local server. Endpoint paths below 
 | PUT | `/api/districts/{id}/seats` | Updated district |
 | GET, POST | `/api/districts/{districtId}/parties` | Party collection / created party |
 | PATCH, DELETE | `/api/districts/{districtId}/parties/{partyId}` | Updated party / delete result |
+| GET, PUT | `/api/districts/{districtId}/votes` | Vote entries for a district |
 | GET, PUT | `/api/settings/election` | Election settings |
 | GET | `/api/elections/results` | Result history, newest first |
 | POST | `/api/elections/calculate` | Calculated election result |

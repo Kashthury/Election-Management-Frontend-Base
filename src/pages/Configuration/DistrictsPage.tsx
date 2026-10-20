@@ -104,17 +104,6 @@ export default function DistrictsPage() {
           </div>
         </div>
         <div className="module-summary-card">
-          <span className="module-summary-icon green">
-            <Building2 size={19} />
-          </span>
-          <div>
-            <small>With seats assigned</small>
-            <strong>
-              {districts.filter((d) => Number(d.seats) > 0).length}
-            </strong>
-          </div>
-        </div>
-        <div className="module-summary-card">
           <span className="module-summary-icon violet">
             <Building2 size={19} />
           </span>
@@ -177,14 +166,13 @@ export default function DistrictsPage() {
               <tr>
                 <th>District</th>
                 <th>Province</th>
-                <th>Seats</th>
                 <th>Status</th>
                 <th className="actions-column">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td colSpan="5" className="module-empty">
+                <td colSpan="4" className="module-empty">
                   Connect the district API to render district rows here.
                 </td>
               </tr>

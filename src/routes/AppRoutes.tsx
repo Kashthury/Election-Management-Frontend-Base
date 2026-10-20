@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import AppLayout from "../layouts/AppLayout";
-import DashboardPage from "../pages/Dashboard/DashboardPage";
 import ProvincesPage from "../pages/Configuration/ProvincesPage";
 import DistrictsPage from "../pages/Configuration/DistrictsPage";
 import SeatsPage from "../pages/Configuration/SeatsPage";
@@ -17,7 +16,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.DASHBOARD} element={<ConfigurationPage />} />
         <Route path={ROUTES.CONFIGURATION} element={<ConfigurationPage />} />
         <Route path={ROUTES.PROVINCES} element={<ProvincesPage />} />
         <Route path={ROUTES.DISTRICTS} element={<DistrictsPage />} />
